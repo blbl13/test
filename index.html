@@ -3,36 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note-Taking Tool with Anki Flashcards and Pomodoro Timer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Note-Taking Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #notes { margin-bottom: 20px; }
+        #flashcards { margin-bottom: 20px; }
+        #pomodoro { margin-bottom: 20px; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Note-Taking Web Tool</h1>
-        <nav>
-            <ul>
-                <li><a href="#flashcards">Anki Flashcards</a></li>
-                <li><a href="#pomodoro">Pomodoro Timer</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="flashcards">
-            <h2>Anki Flashcards</h2>
-            <p>Create and review flashcards to enhance your learning experience.</p>
-            <textarea placeholder="Enter your flashcard question"></textarea>
-            <textarea placeholder="Enter your flashcard answer"></textarea>
-            <button>Create Flashcard</button>
-        </section>
-        <section id="pomodoro">
-            <h2>Pomodoro Timer</h2>
-            <p>Boost your productivity with the Pomodoro technique.</p>
-            <button>Start Timer</button>
-            <button>Stop Timer</button>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Note-Taking Tool</p>
-    </footer>
+    <h1>Note-Taking Application</h1>
+    <div id="notes">
+        <h2>Notes</h2>
+        <textarea id="noteInput" rows="10" cols="30"></textarea><br>
+        <button onclick="addNote()">Add Note</button>
+        <div id="noteList"></div>
+    </div>
+    <div id="flashcards">
+        <h2>Anki Flashcards</h2>
+        <input id="flashcardQuestion" placeholder="Question" />
+        <input id="flashcardAnswer" placeholder="Answer" />
+        <button onclick="addFlashcard()">Add Flashcard</button>
+        <div id="flashcardList"></div>
+    </div>
+    <div id="pomodoro">
+        <h2>Pomodoro Timer</h2>
+        <p id="timerDisplay">25:00</p>
+        <button onclick="startTimer()">Start Timer</button>
+        <button onclick="resetTimer()">Reset Timer</button>
+    </div>
+    <script>
+        let notes = [];
+        function addNote() {
+            const note = document.getElementById('noteInput').value;
+            notes.push(note);
+            document.getElementById('noteInput').value = '';
+            displayNotes();
+        }
+        function displayNotes() {
+            const noteList = document.getElementById('noteList');
+            noteList.innerHTML = notes.map((note, index) => `<div>${note} <button onclick='deleteNote(${index})'>Delete</button></div>`).join('');
+        }
+        function deleteNote(index) {
+            notes.splice(index, 1);
+            displayNotes();
+        }
+        let flashcards = [];
+        function addFlashcard() {
+            const question = document.getElementById('flashcardQuestion').value;
+            const answer = document.getElementById('flashcardAnswer').value;
+            flashcards.push({ question, answer });
+            document.getElementById('flashcardQuestion').value = '';
+            document.getElementById('flashcardAnswer').value = '';
+            displayFlashcards();
+        }
+        function displayFlashcards() {
+            const flashcardList = document.getElementById('flashcardList');
+            flashcardList.innerHTML = flashcards.map((fc, index) => `<div>Q: ${fc.question} - A: ${fc.answer} <button onclick='deleteFlashcard(${index})'>Delete</button></div>`).join('');
+        }
+        function deleteFlashcard(index) {
+            flashcards.splice(index, 1);
+            displayFlashcards();
+        }
+        let timer;
+        let timeLeft = 1500;
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timerDisplay').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                } else {
+                    clearInterval(timer);
+                    alert('Time is up! Take a break!');
+                }
+            }, 1000);
+        }
+        function resetTimer() {
+            clearInterval(timer);
+            timeLeft = 1500;
+            document.getElementById('timerDisplay').innerText = '25:00';
+        }
+    </script>
 </body>
 </html>
