@@ -1,0 +1,140 @@
+{
+  "name": "终极跨平台学习管理笔记工具",
+  "short_name": "学习笔记",
+  "description": "功能强大的学习笔记工具，支持笔记管理、番茄钟、Anki卡片、统计分析等",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "categories": ["productivity", "education", "utilities"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "新建笔记",
+      "short_name": "笔记",
+      "description": "创建新的学习笔记",
+      "url": "/?action=new-note",
+      "icons": [
+        {
+          "src": "/shortcuts/note.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "开始番茄钟",
+      "short_name": "番茄钟",
+      "description": "开始专注学习",
+      "url": "/?action=start-pomodoro",
+      "icons": [
+        {
+          "src": "/shortcuts/pomodoro.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "复习卡片",
+      "short_name": "复习",
+      "description": "开始Anki卡片复习",
+      "url": "/?action=review-cards",
+      "icons": [
+        {
+          "src": "/shortcuts/review.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "查看统计",
+      "short_name": "统计",
+      "description": "查看学习统计数据",
+      "url": "/?action=view-stats",
+      "icons": [
+        {
+          "src": "/shortcuts/stats.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "features": [
+    "Cross Platform",
+    "Offline Support",
+    "PWA",
+    "Dark Mode",
+    "Mobile Optimized",
+    "Data Sync"
+  ],
+  "permissions": [
+    "storage",
+    "notifications",
+    "clipboard-read",
+    "clipboard-write"
+  ],
+  "optional_permissions": [
+    "push",
+    "background-sync"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/note-editor.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "description": "笔记编辑界面"
+    },
+    {
+      "src": "/screenshots/pomodoro-timer.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "description": "番茄钟计时器"
+    },
+    {
+      "src": "/screenshots/anki-cards.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "description": "Anki卡片复习"
+    },
+    {
+      "src": "/screenshots/stats-panel.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "description": "学习统计面板"
+    },
+    {
+      "src": "/screenshots/mobile-view.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "description": "移动端视图"
+    }
+  ]
+}
