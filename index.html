@@ -3,89 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note-Taking Application</title>
+    <title>Feature Rich Note Taking App</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #notes { margin-bottom: 20px; }
-        #flashcards { margin-bottom: 20px; }
-        #pomodoro { margin-bottom: 20px; }
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        header { font-size: 24px; margin-bottom: 20px; }
+        .note { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+        .flashcards { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+        .pomodoro { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <h1>Note-Taking Application</h1>
-    <div id="notes">
-        <h2>Notes</h2>
-        <textarea id="noteInput" rows="10" cols="30"></textarea><br>
-        <button onclick="addNote()">Add Note</button>
-        <div id="noteList"></div>
-    </div>
-    <div id="flashcards">
-        <h2>Anki Flashcards</h2>
-        <input id="flashcardQuestion" placeholder="Question" />
-        <input id="flashcardAnswer" placeholder="Answer" />
-        <button onclick="addFlashcard()">Add Flashcard</button>
-        <div id="flashcardList"></div>
-    </div>
-    <div id="pomodoro">
-        <h2>Pomodoro Timer</h2>
-        <p id="timerDisplay">25:00</p>
-        <button onclick="startTimer()">Start Timer</button>
-        <button onclick="resetTimer()">Reset Timer</button>
-    </div>
-    <script>
-        let notes = [];
-        function addNote() {
-            const note = document.getElementById('noteInput').value;
+
+<header>Feature Rich Note Taking App</header>
+
+<section id="notes-section">
+    <h2>Notes Management</h2>
+    <textarea id="note-input" placeholder="Type your note here..." rows="4" cols="50"></textarea><br>
+    <button id="add-note">Add Note</button>
+    <div id="notes-list"></div>
+</section>
+
+<section id="flashcards-section" class="flashcards">
+    <h2>Anki Flashcards</h2>
+    <textarea id="flashcard-input" placeholder="Front of card..."></textarea><br>
+    <textarea id="flashcard-back-input" placeholder="Back of card..."></textarea><br>
+    <button id="add-flashcard">Add Flashcard</button>
+    <div id="flashcards-list"></div>
+</section>
+
+<section id="pomodoro-section" class="pomodoro">
+    <h2>Pomodoro Timer</h2>
+    <button id="start-pomodoro">Start 25 min Pomodoro</button>
+    <div id="timer-display">25:00</div>
+</section>
+
+<script>
+    // Notes Management
+    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+    const notesList = document.getElementById('notes-list');
+    const noteInput = document.getElementById('note-input');
+
+    function renderNotes() {
+        notesList.innerHTML = '';
+        notes.forEach((note, index) => {
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            noteDiv.innerHTML = `${note} <button onclick=\"deleteNote(${index})\">Delete</button>`;
+            notesList.appendChild(noteDiv);
+        });
+    }
+
+    function deleteNote(index) {
+        notes.splice(index, 1);
+        localStorage.setItem('notes', JSON.stringify(notes));
+        renderNotes();
+    }
+
+    document.getElementById('add-note').onclick = function() {
+        const note = noteInput.value;
+        if (note) {
             notes.push(note);
-            document.getElementById('noteInput').value = '';
-            displayNotes();
+            localStorage.setItem('notes', JSON.stringify(notes));
+            noteInput.value = '';
+            renderNotes();
         }
-        function displayNotes() {
-            const noteList = document.getElementById('noteList');
-            noteList.innerHTML = notes.map((note, index) => `<div>${note} <button onclick='deleteNote(${index})'>Delete</button></div>`).join('');
+    };
+
+    renderNotes();
+
+    // Anki Flashcards
+    const flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+    const flashcardsList = document.getElementById('flashcards-list');
+    const flashcardInput = document.getElementById('flashcard-input');
+    const flashcardBackInput = document.getElementById('flashcard-back-input');
+
+    function renderFlashcards() {
+        flashcardsList.innerHTML = '';
+        flashcards.forEach((flashcard, index) => {
+            const flashcardDiv = document.createElement('div');
+            flashcardDiv.className = 'flashcard';
+            flashcardDiv.innerHTML = `Front: ${flashcard.front} | Back: ${flashcard.back} <button onclick=\"deleteFlashcard(${index})\">Delete</button>`;
+            flashcardsList.appendChild(flashcardDiv);
+        });
+    }
+
+    function deleteFlashcard(index) {
+        flashcards.splice(index, 1);
+        localStorage.setItem('flashcards', JSON.stringify(flashcards));
+        renderFlashcards();
+    }
+
+    document.getElementById('add-flashcard').onclick = function() {
+        const front = flashcardInput.value;
+        const back = flashcardBackInput.value;
+        if (front && back) {
+            flashcards.push({ front, back });
+            localStorage.setItem('flashcards', JSON.stringify(flashcards));
+            flashcardInput.value = '';
+            flashcardBackInput.value = '';
+            renderFlashcards();
         }
-        function deleteNote(index) {
-            notes.splice(index, 1);
-            displayNotes();
-        }
-        let flashcards = [];
-        function addFlashcard() {
-            const question = document.getElementById('flashcardQuestion').value;
-            const answer = document.getElementById('flashcardAnswer').value;
-            flashcards.push({ question, answer });
-            document.getElementById('flashcardQuestion').value = '';
-            document.getElementById('flashcardAnswer').value = '';
-            displayFlashcards();
-        }
-        function displayFlashcards() {
-            const flashcardList = document.getElementById('flashcardList');
-            flashcardList.innerHTML = flashcards.map((fc, index) => `<div>Q: ${fc.question} - A: ${fc.answer} <button onclick='deleteFlashcard(${index})'>Delete</button></div>`).join('');
-        }
-        function deleteFlashcard(index) {
-            flashcards.splice(index, 1);
-            displayFlashcards();
-        }
-        let timer;
-        let timeLeft = 1500;
-        function startTimer() {
-            clearInterval(timer);
-            timer = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
-                    document.getElementById('timerDisplay').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                } else {
-                    clearInterval(timer);
-                    alert('Time is up! Take a break!');
-                }
-            }, 1000);
-        }
-        function resetTimer() {
-            clearInterval(timer);
-            timeLeft = 1500;
-            document.getElementById('timerDisplay').innerText = '25:00';
-        }
-    </script>
+    };
+
+    renderFlashcards();
+
+    // Pomodoro Timer
+    let pomodoroTime = 25 * 60;
+    const timerDisplay = document.getElementById('timer-display');
+
+    document.getElementById('start-pomodoro').onclick = function() {
+        let timer = setInterval(function() {
+            if (pomodoroTime <= 0) {
+                clearInterval(timer);
+                alert('Pomodoro completed!');
+                return;
+            }
+            pomodoroTime--;
+            let minutes = Math.floor(pomodoroTime / 60);
+            let seconds = pomodoroTime % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }, 1000);
+    };
+</script>
+
 </body>
 </html>
