@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note-Taking Tool</title>
+</head>
+<body>
+    <h1>Welcome to the Note-Taking Tool</h1>
+    <p>This tool helps you manage your notes using Anki cards and Pomodoro timer functionality.</p>
+
+    <script>
+        // Timer functionality here
+        let timer;  
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            let twentyFiveMinutes = 60 * 25,
+                display = document.querySelector('#time');
+            startTimer(twentyFiveMinutes, display);
+        };
+    </script>
+    <div> 
+        <label>Timer:</label>
+        <span id="time">25:00</span>
+    </div>
+</body>
+</html>
